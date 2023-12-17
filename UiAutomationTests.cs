@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using OpenQA.Selenium;
 using OpenQA.Selenium.Chrome;
 using OpenQA.Selenium.Support.UI;
@@ -68,10 +69,13 @@ namespace ImplicoQaChallenge
             IEnumerable<IWebElement> elements = Driver.FindElements(By.ClassName("cart_item"));
             Random rnd = new Random();
             int itemIndex = rnd.Next(elements.Count());
+            Assert.That(itemIndex, Is.GreaterThanOrEqualTo(0).And.LessThan(elements.Count()));
             element = GetElement(elements.ElementAt(itemIndex).FindElement(By.TagName("button")));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             element = GetElement(By.Id("continue-shopping"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             DoLogout();
@@ -84,12 +88,16 @@ namespace ImplicoQaChallenge
             DoLogin();
 
             IEnumerable<IWebElement> elements = Driver.FindElements(By.ClassName("inventory_item"));
+            Assert.That(elements, Is.Not.Null.And.Count.GreaterThan(0));
             Random rnd = new Random();
             int itemIndex = rnd.Next(elements.Count());
+            Assert.That(itemIndex, Is.GreaterThanOrEqualTo(0).And.LessThan(elements.Count()));
             IWebElement element = GetElement(elements.ElementAt(itemIndex).FindElement(By.ClassName("inventory_item_label")).FindElement(By.TagName("a")));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             element = GetElement(By.Id("back-to-products"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             DoLogout();
@@ -105,27 +113,34 @@ namespace ImplicoQaChallenge
             AddRandomItemToCart();
 
             IWebElement element = GetElement(By.ClassName("shopping_cart_link"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             element = GetElement(By.Id("checkout"));
             element.Click();
 
             element = GetElement(By.Id("first-name"));
+            Assert.That(element, Is.Not.Null);
             element.SendKeys("Rui");
 
             element = GetElement(By.Id("last-name"));
+            Assert.That(element, Is.Not.Null);
             element.SendKeys("Gonçalves");
 
             element = GetElement(By.Id("postal-code"));
+            Assert.That(element, Is.Not.Null);
             element.SendKeys("2460-602");
 
             element = GetElement(By.Id("continue"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             element = GetElement(By.Id("finish"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             element = GetElement(By.Id("back-to-products"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
 
             DoLogout();
@@ -135,39 +150,49 @@ namespace ImplicoQaChallenge
         private void DoLogin()
         {
             IWebElement element = GetElement(By.Id("user-name"));
+            Assert.That(element, Is.Not.Null);
             element.SendKeys("standard_user");
             element = GetElement(By.Id("password"));
+            Assert.That(element, Is.Not.Null);
             element.SendKeys("secret_sauce");
             element = GetElement(By.Id("login-button"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
         }
 
         private void DoLogout()
         {
             IWebElement element = GetElement(By.Id("react-burger-menu-btn"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
             element = GetElement(By.Id("logout_sidebar_link"));
+            Assert.That(element, Is.Not.Null);
             element.Click();
         }
 
         private void AddRandomItemToCart()
         {
             IEnumerable<IWebElement> elements = Driver.FindElements(By.ClassName("inventory_item"));
+            Assert.That(elements, Is.Not.Null.And.Count.GreaterThan(0));
             Random rnd = new Random();
             int itemIndex = rnd.Next(elements.Count());
+            Assert.That(itemIndex, Is.GreaterThanOrEqualTo(0).And.LessThan(elements.Count()));
             IWebElement element = GetElement(elements.ElementAt(itemIndex).FindElement(By.TagName("button")));
+            Assert.That(element, Is.Not.Null);
             element.Click();
         }
 
         private IWebElement GetElement(By locator)
         {
             IWebElement element = Wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(locator));
+            Assert.That(element, Is.Not.Null);
             return element;
         }
 
         private IWebElement GetElement(IWebElement element)
         {
             element = Wait.Until(SeleniumExtras.WaitHelpers.ExpectedConditions.ElementToBeClickable(element));
+            Assert.That(element, Is.Not.Null);
             return element;
         }
 
